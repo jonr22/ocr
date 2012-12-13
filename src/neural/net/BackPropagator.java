@@ -6,11 +6,12 @@ import java.util.ArrayList;
 /**
  * This class performs back-propagation on a Network to update/train the
  * weights of the Neurons within each Layer in the Network
- * 
+ *
  * @author Jonathan Reimels
  * @version 1.0.0
  */
-public class BackPropagator implements Serializable  {
+public class BackPropagator implements Serializable  { //TODO: have this extend class called Trainer
+    // TODO: this probably doesn't need to be Serializable
 	/**
 	 * generated Serial Version UID
 	 */

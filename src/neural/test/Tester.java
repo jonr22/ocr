@@ -35,10 +35,10 @@ public class Tester {
             System.out.println(String.format("Input: 0.0, 1.0, 0.0\tOutput: %f", network.fire(new double[] {0.0, 1.0, 0.0})[0]));
             System.out.println(String.format("Input: 0.0, 0.0, 1.0\tOutput: %f", network.fire(new double[] {0.0, 0.0, 1.0})[0]));
             System.out.println(String.format("Input: 0.0, 0.0, 0.0\tOutput: %f", network.fire(new double[] {0.0, 0.0, 0.0})[0]));
-            
-            network.save("/Users/Jonathan/Desktop/ann.ser");
-            
-            Network work = Network.load("/Users/Jonathan/Desktop/ann.ser");
+
+            network.save("d:\\NeuralNet.ser");
+
+            Network work = Network.load("d:\\NeuralNet.ser");
             System.out.println("\n--------------TEST LOAD--------------");
             System.out.println(String.format("Input: 1.0, 1.0, 1.0\tOutput: %f", work.fire(new double[] {1.0, 1.0, 1.0})[0]));
             System.out.println(String.format("Input: 1.0, 1.0, 0.0\tOutput: %f", work.fire(new double[] {1.0, 1.0, 0.0})[0]));

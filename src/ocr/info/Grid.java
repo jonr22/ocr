@@ -1,13 +1,20 @@
 package ocr.info;
 
+import java.io.Serializable;
+
 /**
  * Representation of a Grid
  *
  * @author Jonathan Reimels
  * @version 1.0.0
  */
-public class Grid {
-	private boolean[][] _grid;
+public class Grid implements Serializable {
+	/**
+     * generated Serial Version UID
+     */
+    private static final long serialVersionUID = 5568527630676326642L;
+
+    private boolean[][] _grid;
 	private int _size = 8;
 
 	/**

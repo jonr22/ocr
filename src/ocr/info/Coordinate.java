@@ -1,13 +1,20 @@
 package ocr.info;
 
+import java.io.Serializable;
+
 /**
  * Container for grid coordinates, 0-based
  *
  * @author Jonathan Reimels
  * @version 1.0.0
  */
-public class Coordinate {
-	private int _row, _col;
+public class Coordinate implements Serializable {
+	/**
+     * generated Serial Version UID
+     */
+    private static final long serialVersionUID = 8238698537968720873L;
+
+    private int _row, _col;
 
 	/**
 	 * Default Constructor

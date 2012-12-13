@@ -5,53 +5,53 @@ import ocr.info.Coordinate;
 import ocr.info.Grid;
 
 public class GridProcessor {
-	private static final int HIDDEN_NEURON_COUNT = 25;
-	private static final int OUTPUT_COUNT = 1;
+
 	private static final double TRUE = 1.0;
 	private static final double FALSE = 0.0;
 	private static final double CUTOFF = 0.8;
-	
-	private Network _network;
-	private Grid _grid;
-	
-	public GridProcessor(Grid grid) {
-		_grid = grid;
-		_network = new Network(_grid.getSize() * _grid.getSize(), OUTPUT_COUNT, HIDDEN_NEURON_COUNT);
+
+	public static double[] convertGrid(Grid grid) throws Exception {
+	    int size = grid.getSize();
+        double[] inputs = new double[size * size];
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (grid.getValue(new Coordinate(row, col))) {
+                    inputs[row * size + col] = TRUE;
+                } else {
+                    inputs[row * size + col] = FALSE;
+                }
+            }
+        }
+
+        return inputs;
 	}
-	
-	public GridProcessor(Grid grid, String filename) throws Exception {
-		_grid = grid;
-		_network = Network.load(filename);
+
+	public static double[] convertExpectedOutput(char output) {
+	    // TODO: check output is 0 or a capital letter
+	    double[] expected = new double[NetworkManager.OUTPUT_SIZE];
+	    for (int i = 0; i < NetworkManager.OUTPUT_SIZE; i++) {
+	        expected[i] = FALSE;
+	    }
+
+	    if (Character.getNumericValue(output) != 0) {
+    	    int index = Character.getNumericValue(output) - Character.getNumericValue('A');
+    	    expected[index] = TRUE;
+	    }
+
+	    return expected;
 	}
-	
-	public void save(String filename) throws Exception {
-		_network.save(filename);
-	}
-	
-	public char process() throws Exception {
-		int size = _grid.getSize();
-		double[] inputs = new double[size * size];
-		
-		for (int row = 0; row < size; row++) {
-			for (int col = 0; col < size; col++) {
-				if (_grid.getValue(new Coordinate(row, col))) {
-					inputs[row * size + col] = TRUE;
-				} else {
-					inputs[row * size + col] = FALSE;
-				}
-			}
-		}
-		
-		double[] outputs = _network.fire(inputs);
+
+	public static char process(Grid grid, Network network) throws Exception {
+		double[] inputs = convertGrid(grid);
+
+		double[] outputs = network.fire(inputs);
 		for (int i = 0; i < outputs.length; i++) {
 			if (outputs[i] > CUTOFF) {
 				return (char)(i + Character.getNumericValue('A'));
 			}
 		}
-		
+
 		return 0;
 	}
-	
-	// train
-	
 }
