@@ -17,7 +17,7 @@ public class TrainingManager {
         _trainingSet = trainingSet;
     }
 
-    public void setLearningRate(int learningRate) {
+    public void setLearningRate(double learningRate) {
         _learningRate = learningRate;
     }
 

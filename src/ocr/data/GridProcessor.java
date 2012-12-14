@@ -34,24 +34,26 @@ public class GridProcessor {
 	        expected[i] = FALSE;
 	    }
 
-	    if (Character.getNumericValue(output) != 0) {
+	    if (Character.isLetter(output)) {
     	    int index = Character.getNumericValue(output) - Character.getNumericValue('A');
     	    expected[index] = TRUE;
 	    }
 
 	    return expected;
 	}
+	
+	public static char convertOutput(double[] output) {
+		for (int i = 0; i < output.length; i++) {
+			if (output[i] > CUTOFF) {
+				return (char)(i + 'A');
+			}
+		}
+		return 0;
+	}
 
 	public static char process(Grid grid, Network network) throws Exception {
 		double[] inputs = convertGrid(grid);
-
 		double[] outputs = network.fire(inputs);
-		for (int i = 0; i < outputs.length; i++) {
-			if (outputs[i] > CUTOFF) {
-				return (char)(i + Character.getNumericValue('A'));
-			}
-		}
-
-		return 0;
+		return convertOutput(outputs);
 	}
 }
