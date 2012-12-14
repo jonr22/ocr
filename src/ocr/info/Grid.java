@@ -35,6 +35,21 @@ public class Grid implements Serializable {
 		return _size;
 	}
 
+	public Grid clone() {
+	    Grid grid = new Grid(_size);
+	    for (int row = 0; row < _size; row++) {
+	        for (int col = 0; col < _size; col++) {
+	            Coordinate coord = new Coordinate(row, col);
+	            try {
+	                grid.setValue(coord, _grid[row][col]);
+	            } catch (Exception ex) {
+	                // TODO: handle this
+	            }
+	        }
+	    }
+	    return grid;
+	}
+
 	/**
 	 * Get the value of a coordinate
 	 * @param coord - The coordinate to get

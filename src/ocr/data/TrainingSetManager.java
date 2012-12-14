@@ -1,5 +1,6 @@
 package ocr.data;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,28 +22,28 @@ import ocr.info.TrainingGrid;
  */
 public class TrainingSetManager {
     // instance variables
-    private ArrayList<TrainingGrid> _grids = new ArrayList<TrainingGrid>();
+    private ArrayList<TrainingGrid> _trainingGrids = new ArrayList<TrainingGrid>();
     private int _index = -1;
 
     /**
      * Add a TrainingGrid to the set
-     * @param grid - TrainingGrid to add
+     * @param trainingGrid - TrainingGrid to add
      */
-    public void add(TrainingGrid grid) {
-        _grids.add(grid);
+    public void add(TrainingGrid trainingGrid) {
+        _trainingGrids.add(trainingGrid);
     }
 
     /**
      * Remove an existing TrainingGrid from the set
-     * @param grid - TrainingGrid to remove
+     * @param trainingGrid - TrainingGrid to remove
      * @throws Exception
      */
-    public void remove(TrainingGrid grid) throws Exception {
-        if (!_grids.contains(grid)) {
+    public void remove(TrainingGrid trainingGrid) throws Exception {
+        if (!_trainingGrids.contains(trainingGrid)) {
             throw new Exception("Grid could not be removed from TrainingDataManager as it doesn't exist");
         }
 
-        _grids.remove(grid);
+        _trainingGrids.remove(trainingGrid);
     }
 
     /**
@@ -52,49 +53,49 @@ public class TrainingSetManager {
      * @throws Exception
      */
     public void edit(TrainingGrid original, TrainingGrid edited) throws Exception {
-        if (!_grids.contains(original)) {
+        if (!_trainingGrids.contains(original)) {
             throw new Exception("Grid could not be edited in TrainingDataManager as it doesn't exist");
         }
 
         // add edited grid at the same location original was at
-        int index = _grids.indexOf(original);
-        _grids.remove(original);
-        _grids.add(index, edited);
+        int index = _trainingGrids.indexOf(original);
+        _trainingGrids.remove(original);
+        _trainingGrids.add(index, edited);
     }
 
     /**
      * Clear all TrainingGrids from the set
      */
     public void clear() {
-        _grids = new ArrayList<TrainingGrid>();
+        _trainingGrids = new ArrayList<TrainingGrid>();
     }
 
     /**
      * Save the set of TrainingGrids
-     * @param filename - file to save
+     * @param file - File to save
      * @throws IOException
      */
-    public void save(String filename) throws IOException {
-        FileOutputStream fs = new FileOutputStream(filename);
+    public void save(File file) throws IOException {
+        FileOutputStream fs = new FileOutputStream(file);
         ObjectOutputStream os = new ObjectOutputStream(fs);
-        os.writeObject(_grids);
+        os.writeObject(_trainingGrids);
         os.close();
     }
 
     /**
      * Load a set of TrainingGrids
-     * @param filename - file to load
+     * @param file - File to load
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public void load(String filename) throws Exception {
+    public void load(File file) throws Exception {
         try {
-            FileInputStream fs = new FileInputStream(filename);
+            FileInputStream fs = new FileInputStream(file);
             ObjectInputStream os = new ObjectInputStream(fs);
-            _grids = (ArrayList<TrainingGrid>) os.readObject();
+            _trainingGrids = (ArrayList<TrainingGrid>) os.readObject();
             os.close();
         } catch (Exception ex) {
-            _grids = new ArrayList<TrainingGrid>();
+            _trainingGrids = new ArrayList<TrainingGrid>();
             throw ex;
         }
     }
@@ -104,7 +105,7 @@ public class TrainingSetManager {
      * @return count
      */
     public int getCount() {
-        return _grids.size();
+        return _trainingGrids.size();
     }
 
     /**
@@ -114,14 +115,14 @@ public class TrainingSetManager {
      * @throws Exception
      */
     public TrainingGrid getGrid(int index) throws Exception {
-        if (index < 0 || index >= _grids.size()) {
+        if (index < 0 || index >= _trainingGrids.size()) {
             throw new Exception(String.format(
                     "getGrid called on TrainingSetManager with invalid iindex, expected index to be within %d not %d",
-                    _grids.size(),
+                    _trainingGrids.size(),
                     index));
         }
 
-        return _grids.get(index);
+        return _trainingGrids.get(index);
     }
 
     /**
@@ -130,12 +131,12 @@ public class TrainingSetManager {
      * @throws Exception
      */
     public TrainingGrid getNext() throws Exception {
-        if (_grids.isEmpty()) {
+        if (_trainingGrids.isEmpty()) {
             throw new Exception("getNext() called in TrainingDataManager on empty data set");
         }
 
-        _index = (_index + 1) % _grids.size();
-        return _grids.get(_index);
+        _index = (_index + 1) % _trainingGrids.size();
+        return _trainingGrids.get(_index);
     }
 
     /**
@@ -144,11 +145,12 @@ public class TrainingSetManager {
      * @throws Exception
      */
     public TrainingGrid getPrevious() throws Exception {
-        if (_grids.isEmpty()) {
+        if (_trainingGrids.isEmpty()) {
             throw new Exception("getPrevious() called in TrainingDataManager on empty data set");
         }
 
-        _index = (_index - 1) % _grids.size();
-        return _grids.get(_index);
+        _index = (_index - 1) % _trainingGrids.size();
+        if (_index < 0 ) { _index += _trainingGrids.size(); }
+        return _trainingGrids.get(_index);
     }
 }

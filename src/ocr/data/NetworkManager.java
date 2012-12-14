@@ -1,5 +1,7 @@
 package ocr.data;
 
+import java.io.File;
+
 import neural.net.Network;
 
 public class NetworkManager {
@@ -17,15 +19,15 @@ public class NetworkManager {
         _network = new Network(INPUT_SIZE, OUTPUT_SIZE, HIDDEN_NEURON_COUNT);
     }
 
-    public NetworkManager(String filename) throws Exception {
-        _network = Network.load(filename);
+    public NetworkManager(File file) throws Exception {
+        _network = Network.load(file);
     }
 
     public Network getNetwork() {
         return _network;
     }
 
-    public void save(String filename) throws Exception {
-        _network.save(filename);
+    public void save(File file) throws Exception {
+        _network.save(file);
     }
 }

@@ -1,5 +1,6 @@
 package neural.net;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,9 +13,9 @@ import java.io.Serializable;
  * The number of inputs, outputs, and neurons in the hidden layer are
  * configurable and the Activation Function can be configured too with
  * any class that implements the ActivationFunction interface.
- * 
+ *
  * This Network is restricted to use exactly one hidden layer
- * 
+ *
  * @author Jonathan Reimels
  * @version 1.0.0
  */
@@ -137,11 +138,11 @@ public class Network implements Serializable  {
 	 * Save the neural network to a file, this should be used after
 	 * training is complete so that the Network can be reloaded and
 	 * training will not need to be redone
-	 * @param filename - file to save
+	 * @param file - File to save
 	 * @throws FileNotFoundException, IOException
 	 */
-	public void save(String filename) throws Exception {
-		FileOutputStream fs = new FileOutputStream(filename);
+	public void save(File file) throws Exception {
+		FileOutputStream fs = new FileOutputStream(file);
 		ObjectOutputStream os = new ObjectOutputStream(fs);
 		os.writeObject(this);
 		os.close();
@@ -149,12 +150,12 @@ public class Network implements Serializable  {
 
 	/**
 	 * Load a Network from a file
-	 * @param filename - file to load
+	 * @param file - File to load
 	 * @return Network
 	 * @throws FileNotFoundException, IOException, ClassNotFoundException
 	 */
-	public static Network load(String filename) throws Exception {
-		FileInputStream fs = new FileInputStream(filename);
+	public static Network load(File file) throws Exception {
+		FileInputStream fs = new FileInputStream(file);
 		ObjectInputStream os = new ObjectInputStream(fs);
 		Object obj = os.readObject();
 		os.close();
