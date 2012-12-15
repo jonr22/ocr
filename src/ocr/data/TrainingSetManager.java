@@ -23,7 +23,17 @@ import ocr.info.TrainingGrid;
 public class TrainingSetManager {
     // instance variables
     private ArrayList<TrainingGrid> _trainingGrids = new ArrayList<TrainingGrid>();
-    private int _index = -1;
+    //private int _index = -1;
+    private boolean _hasChanged = false;
+    private File _file = null;
+    
+    public boolean getHasFileSet() {
+    	return _file != null;
+    }
+    
+    public boolean getHasChanged() {
+    	return _hasChanged;
+    }
 
     /**
      * Add a TrainingGrid to the set
@@ -31,6 +41,7 @@ public class TrainingSetManager {
      */
     public void add(TrainingGrid trainingGrid) {
         _trainingGrids.add(trainingGrid);
+        _hasChanged = true;
     }
 
     /**
@@ -44,6 +55,7 @@ public class TrainingSetManager {
         }
 
         _trainingGrids.remove(trainingGrid);
+        _hasChanged = true;
     }
 
     /**
@@ -61,6 +73,7 @@ public class TrainingSetManager {
         int index = _trainingGrids.indexOf(original);
         _trainingGrids.remove(original);
         _trainingGrids.add(index, edited);
+        _hasChanged = true;
     }
 
     /**
@@ -68,6 +81,9 @@ public class TrainingSetManager {
      */
     public void clear() {
         _trainingGrids = new ArrayList<TrainingGrid>();
+        
+        _file = null;
+        _hasChanged = false;
     }
 
     /**
@@ -75,11 +91,23 @@ public class TrainingSetManager {
      * @param file - File to save
      * @throws IOException
      */
-    public void save(File file) throws IOException {
+    public void saveAs(File file) throws IOException {
         FileOutputStream fs = new FileOutputStream(file);
         ObjectOutputStream os = new ObjectOutputStream(fs);
         os.writeObject(_trainingGrids);
         os.close();
+        
+        _file = file;
+        _hasChanged = false;
+    }
+    
+    public void save() throws IOException {
+        FileOutputStream fs = new FileOutputStream(_file);
+        ObjectOutputStream os = new ObjectOutputStream(fs);
+        os.writeObject(_trainingGrids);
+        os.close();
+        
+        _hasChanged = false;
     }
 
     /**
@@ -94,6 +122,9 @@ public class TrainingSetManager {
             ObjectInputStream os = new ObjectInputStream(fs);
             _trainingGrids = (ArrayList<TrainingGrid>) os.readObject();
             os.close();
+            
+            _file = file;
+            _hasChanged = false;
         } catch (Exception ex) {
             _trainingGrids = new ArrayList<TrainingGrid>();
             throw ex;
@@ -130,21 +161,21 @@ public class TrainingSetManager {
      * @return TrainingGrid
      * @throws Exception
      */
-    public TrainingGrid getNext() throws Exception {
+    /*public TrainingGrid getNext() throws Exception {
         if (_trainingGrids.isEmpty()) {
             throw new Exception("getNext() called in TrainingDataManager on empty data set");
         }
 
         _index = (_index + 1) % _trainingGrids.size();
         return _trainingGrids.get(_index);
-    }
+    }*/
 
     /**
      * Get the previous TrainingGrid in the set (continuously loops backward through training sets)
      * @return
      * @throws Exception
      */
-    public TrainingGrid getPrevious() throws Exception {
+    /*public TrainingGrid getPrevious() throws Exception {
         if (_trainingGrids.isEmpty()) {
             throw new Exception("getPrevious() called in TrainingDataManager on empty data set");
         }
@@ -152,5 +183,5 @@ public class TrainingSetManager {
         _index = (_index - 1) % _trainingGrids.size();
         if (_index < 0 ) { _index += _trainingGrids.size(); }
         return _trainingGrids.get(_index);
-    }
+    }*/
 }
