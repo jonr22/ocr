@@ -2,15 +2,17 @@ package ocr.data;
 
 import java.io.File;
 
+import ocr.info.OutputValues;
+
 import neural.net.Network;
 
 public class NetworkManager {
     // public constants
-    public static final int OUTPUT_SIZE = 1;
+    public static final int OUTPUT_SIZE = OutputValues.OUTPUT.length;
     public static final int INPUT_SIZE = 8 * 8;
 
     // private constants
-    private static final int HIDDEN_NEURON_COUNT = 25;
+    private static final int HIDDEN_NEURON_COUNT = (INPUT_SIZE * 2) / 3 + OUTPUT_SIZE;
 
     // instance variables
     private Network _network;

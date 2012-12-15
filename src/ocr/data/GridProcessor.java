@@ -35,7 +35,7 @@ public class GridProcessor {
 	    }
 
 	    if (Character.isLetter(output)) {
-    	    int index = Character.getNumericValue(output) - Character.getNumericValue('A');
+    	    int index = output - 'A';
     	    expected[index] = TRUE;
 	    }
 
