@@ -31,7 +31,7 @@ import ocr.data.GridProcessor;
 import ocr.data.NetworkManager;
 import ocr.data.TrainingManager;
 import ocr.data.TrainingSetManager;
-import ocr.info.OutputValues;
+import ocr.info.Constants;
 import ocr.info.TrainingGrid;
 
 /**
@@ -41,7 +41,7 @@ import ocr.info.TrainingGrid;
  * @author Jonathan Reimels
  * @version 1.0.0
  */
-public class TrainGui {
+public class OcrGui {
 	// Constants
 	private static final int START_WIDTH = 500;
 	private static final int START_HEIGHT = 500;
@@ -53,7 +53,6 @@ public class TrainGui {
 	private char _expectedOutput;
 	private TrainingGrid _currentTrainGrid = null;
 	private int _index = 0;
-	
 	private GridPanel _gridPanel = new GridPanel();
 	private TrainingSetManager _trainingSet = new TrainingSetManager();
 	private NetworkManager _networkManager = new NetworkManager();
@@ -61,13 +60,13 @@ public class TrainGui {
 
 	// frame
 	private JFrame _frame;
-	
+
 	// menu bar titles
 	private JMenu _fileMenu = new JMenu("File");
 	private JMenu _editMenu = new JMenu("Edit");
 	private JMenu _navigateMenu = new JMenu("Navigate");
 	private JMenu _runMenu = new JMenu("Run");
-	
+
 	// file menu items
 	private JMenuItem _newSetMenuItem = new JMenuItem("New Set");
 	private JMenuItem _loadSetMenuItem = new JMenuItem("Load Set...");
@@ -77,41 +76,41 @@ public class TrainGui {
 	private JMenuItem _loadNetMenuItem = new JMenuItem("Load Network...");
 	private JMenuItem _saveNetMenuItem = new JMenuItem("Save Network");
 	private JMenuItem _saveNetAsMenuItem = new JMenuItem("Save Network As...");
-	
+
 	// edit menu items
 	private JMenuItem _addGridMenuItem = new JMenuItem("Add");
 	private JMenuItem _deleteGridMenuItem = new JMenuItem("Delete");
 	private JMenuItem _clearGridMenuItem = new JMenuItem("Clear");
-	
+
 	// navigate menu items
 	private JMenuItem _leftGridMenuItem = new JMenuItem("Move Left");
 	private JMenuItem _rightGridMenuItem = new JMenuItem("Move Right");
 	private JMenuItem _firstGridMenuItem = new JMenuItem("Move to First Grid");
 	private JMenuItem _lastGridMenuItem = new JMenuItem("Move to Last Grid");
-	
+
 	// run menu items
 	private JMenuItem _executeMenuItem = new JMenuItem("Execute");
 	private JMenuItem _trainMenuItem = new JMenuItem("Train");
-	
+
 	// sub menu items
 	private JMenu _expectedOutputMenu = new JMenu("Expected Output");
 	private ButtonGroup _expectedOutputGroup = new ButtonGroup();
-	
+
 	// top panel items
-	private JComboBox _expectedOutputList = new JComboBox(OutputValues.OUTPUT);
+	private JComboBox _expectedOutputList = new JComboBox(Constants.OUTPUT);
 	private JButton _addBtn = new JButton("Add");
 	private JButton _clearBtn = new JButton("Clear");
 	private JButton _executeBtn = new JButton("Execute");
-	
+
 	// bottom panel items
 	private JButton _firstBtn = new JButton("|<");
 	private JButton _leftBtn = new JButton("<");
 	private JButton _rightBtn = new JButton(">");
 	private JButton _lastBtn = new JButton(">|");
 	private JLabel _indexLabel = new JLabel(DEFAULT_INDEX_LABEL);
-	
+
 	/**
-	 * Create the GUI and instantiate the grid displayed to the user
+	 * Create the GUI
 	 */
 	public void buildGui() {
 		// -------------------Frame-------------------
@@ -126,10 +125,10 @@ public class TrainGui {
 		JMenuBar menubar = new JMenuBar();
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new FlowLayout());
-		
+
 		// create sub-menu
-		for (int i = 0; i < OutputValues.OUTPUT.length; i++) {
-			JRadioButtonMenuItem item = new JRadioButtonMenuItem(OutputValues.OUTPUT[i].toString());
+		for (int i = 0; i < Constants.OUTPUT.length; i++) {
+			JRadioButtonMenuItem item = new JRadioButtonMenuItem(Constants.OUTPUT[i].toString());
 			item.addActionListener(new SelectOutputMenuListener());
 			_expectedOutputGroup.add(item);
 			_expectedOutputMenu.add(item);
@@ -137,24 +136,24 @@ public class TrainGui {
 
 		// set accelerators
 		_saveSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_S, 
+				KeyEvent.VK_S,
 				InputEvent.CTRL_DOWN_MASK));
 		_saveNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_S, 
+				KeyEvent.VK_S,
 				InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		_addGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
 		_clearGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
 		_leftGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK));
 		_rightGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK));
 		_firstGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_LEFT, 
+				KeyEvent.VK_LEFT,
 				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		_lastGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_RIGHT, 
+				KeyEvent.VK_RIGHT,
 				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		_executeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
 		_trainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK));
-		
+
 		// set actions
 		_newSetMenuItem.addActionListener(new NewSetListener());
 		_loadSetMenuItem.addActionListener(new LoadSetListener());
@@ -168,7 +167,7 @@ public class TrainGui {
 		_deleteGridMenuItem.addActionListener(new DeleteGridListener());
 		_clearGridMenuItem.addActionListener(new ClearGridListener());
 		_leftGridMenuItem.addActionListener(new LeftGridListener());
-		_rightGridMenuItem.addActionListener(new RightGridListener());	
+		_rightGridMenuItem.addActionListener(new RightGridListener());
 		_firstGridMenuItem.addActionListener(new FirstGridListener());
 		_lastGridMenuItem.addActionListener(new LastGridListener());
 		_executeMenuItem.addActionListener(new ExecuteListener());
@@ -177,7 +176,7 @@ public class TrainGui {
 		_addBtn.addActionListener(new AddGridListener());
 		_clearBtn.addActionListener(new ClearGridListener());
 		_executeBtn.addActionListener(new ExecuteListener());
-		
+
 		// set disabled
 		_saveSetMenuItem.setEnabled(false);
 		_saveSetAsMenuItem.setEnabled(false);
@@ -198,7 +197,7 @@ public class TrainGui {
 		_fileMenu.add(_loadNetMenuItem);
 		_fileMenu.add(_saveNetMenuItem);
 		_fileMenu.add(_saveNetAsMenuItem);
-		
+
 		// add edit menu items
 		_editMenu.add(_addGridMenuItem);
 		_editMenu.add(_deleteGridMenuItem);
@@ -206,24 +205,24 @@ public class TrainGui {
 		_editMenu.add(_expectedOutputMenu);
 		_editMenu.addSeparator();
 		_editMenu.add(_clearGridMenuItem);
-		
+
 		// add navigate menu items
 		_navigateMenu.add(_leftGridMenuItem);
 		_navigateMenu.add(_rightGridMenuItem);
 		_navigateMenu.addSeparator();
 		_navigateMenu.add(_firstGridMenuItem);
 		_navigateMenu.add(_lastGridMenuItem);
-		
+
 		// add run menu items
 		_runMenu.add(_executeMenuItem);
 		_runMenu.add(_trainMenuItem);
-		
+
 		// add top panel items
 		topPanel.add(_expectedOutputList);
 		topPanel.add(_addBtn);
 		topPanel.add(_clearBtn);
 		topPanel.add(_executeBtn);
-		
+
 		// setup menu and top panel
 		menubar.add(_fileMenu);
 		menubar.add(_editMenu);
@@ -231,7 +230,7 @@ public class TrainGui {
 		menubar.add(_runMenu);
 		_frame.setJMenuBar(menubar);
 		background.add(topPanel, BorderLayout.NORTH);
-		
+
 		// -------------------Bottom-------------------
 		// create the bottom panel
 		JPanel bottomPanel = new JPanel();
@@ -239,7 +238,7 @@ public class TrainGui {
 
 		JPanel navPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
-		
+
 		// set actions
 		_firstBtn.addActionListener(new FirstGridListener());
 		_leftBtn.addActionListener(new LeftGridListener());
@@ -251,13 +250,13 @@ public class TrainGui {
 		_leftBtn.setEnabled(false);
 		_rightBtn.setEnabled(false);
 		_lastBtn.setEnabled(false);
-		
+
 		// add buttons
 		navPanel.add(_firstBtn);
 		navPanel.add(_leftBtn);
 		navPanel.add(_rightBtn);
 		navPanel.add(_lastBtn);
-		
+
 		// add info
 		infoPanel.add(_indexLabel);
 
@@ -270,10 +269,7 @@ public class TrainGui {
 		// add listeners
 		_gridPanel.addMouseListener(new UserInputListener());
 		_gridPanel.addMouseMotionListener(new UserInputListener());
-		
-		// don't paint grid yet
-		//_gridPanel.setDoPaintGrid(false);
-		
+
 		// add to background
 		background.add(_gridPanel, BorderLayout.CENTER);
 
@@ -299,7 +295,7 @@ public class TrainGui {
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the expected output
 	 */
@@ -323,7 +319,7 @@ public class TrainGui {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			try {
-				if (_trainingSet.getHasChanged()) {
+				if (_trainingSet.isChanged()) {
 					int confirm = confirmQuestion("Set has unsaved changes. Would you like to save?");
 					if (confirm == JOptionPane.CANCEL_OPTION) {
 						return;
@@ -333,7 +329,7 @@ public class TrainGui {
 						saveset.actionPerformed(null);
 					}
 				}
-				
+
 				_trainingSet = new TrainingSetManager();
 				_index = 0;
 				setTrainingGrid(null);
@@ -350,7 +346,7 @@ public class TrainGui {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			try {
-				if (_trainingSet.getHasChanged()) {
+				if (_trainingSet.isChanged()) {
 					int confirm = confirmQuestion("Set has unsaved changes. Would you like to save?");
 					if (confirm == JOptionPane.CANCEL_OPTION) {
 						return;
@@ -374,18 +370,21 @@ public class TrainGui {
 				} else {
 					setTrainingGrid(null);
 				}
-				 
+
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
 	}
-	
+
+	/**
+	 * Save the training set to an existing file
+	 */
 	private class SaveSetListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			try {
-				if (!_trainingSet.getHasFileSet()) {
+				if (!_trainingSet.isFileSet()) {
 					SaveSetAsListener saveset = new SaveSetAsListener();
 					saveset.actionPerformed(null);
 				} else {
@@ -398,7 +397,7 @@ public class TrainGui {
 	}
 
 	/**
-	 * Save the Training Set
+	 * Save the Training Set to a new file
 	 */
 	private class SaveSetAsListener implements ActionListener {
 		@Override
@@ -417,6 +416,9 @@ public class TrainGui {
 		}
 	}
 
+	/**
+	 * Create a new Network
+	 */
 	private class NewNetListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent a) {
@@ -427,7 +429,7 @@ public class TrainGui {
 			}
 		}
 	}
-	
+
 	/**
 	 * Load a saved Network
 	 */
@@ -446,15 +448,15 @@ public class TrainGui {
 			}
 		}
 	}
-	
+
 	/**
-	 * Save the Network
+	 * Save the Network to an existing File
 	 */
 	private class SaveNetListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			try {
-				if (!_networkManager.getHasFileSet()) {
+				if (!_networkManager.isFileSet()) {
 					SaveNetAsListener savenet = new SaveNetAsListener();
 					savenet.actionPerformed(null);
 				} else {
@@ -465,9 +467,9 @@ public class TrainGui {
 			}
 		}
 	}
-	
+
 	/**
-	 * Save the Network
+	 * Save the Network to a new File
 	 */
 	private class SaveNetAsListener implements ActionListener {
 		@Override
@@ -485,9 +487,9 @@ public class TrainGui {
 			}
 		}
 	}
-	
+
 	/**
-	 * Save the grid within the current Training Set
+	 * Add the grid to the training set
 	 */
 	private class AddGridListener implements ActionListener {
 		@Override
@@ -495,7 +497,7 @@ public class TrainGui {
 			try {
 				_trainingSet.add(new TrainingGrid(_gridPanel.getGrid(), _expectedOutput));
 				_index = _trainingSet.getCount(); // TODO: does this work? one more than available as it's new
-				setTrainingGrid(null);				
+				setTrainingGrid(null);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -510,10 +512,10 @@ public class TrainGui {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				_trainingSet.remove(_currentTrainGrid);
-				
+
 				if (_trainingSet.getCount() > 0) {
 					if (_index > 0) { _index--; }
-					setTrainingGrid(_trainingSet.getGrid(_index));	
+					setTrainingGrid(_trainingSet.getGrid(_index));
 				} else {
 					_index = 0;
 					setTrainingGrid(null);
@@ -525,7 +527,7 @@ public class TrainGui {
 	}
 
 	/**
-	 * Clear the entire Grid
+	 * Clear the current Grid
 	 */
 	private class ClearGridListener implements ActionListener {
 		@Override
@@ -543,10 +545,10 @@ public class TrainGui {
 			try {
 				if (_index <= 0) {
 					JOptionPane.showConfirmDialog(
-							_frame, 
-							"Already at the first image in the set!", 
-							_frame.getTitle(), 
-							JOptionPane.OK_OPTION, 
+							_frame,
+							"Already at the first image in the set!",
+							_frame.getTitle(),
+							JOptionPane.OK_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
@@ -567,10 +569,10 @@ public class TrainGui {
 			try {
 				if (_index >= _trainingSet.getCount() - 1) {
 					JOptionPane.showConfirmDialog(
-							_frame, 
-							"Already at the last image in the set!", 
-							_frame.getTitle(), 
-							JOptionPane.OK_OPTION, 
+							_frame,
+							"Already at the last image in the set!",
+							_frame.getTitle(),
+							JOptionPane.OK_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
@@ -581,9 +583,9 @@ public class TrainGui {
 			}
 		}
 	}
-	
+
 	/**
-	 * Move left through the current Training Set
+	 * Move to the first Grid in the current Training Set
 	 */
 	private class FirstGridListener implements ActionListener {
 		@Override
@@ -591,10 +593,10 @@ public class TrainGui {
 			try {
 				if (_index <= 0) {
 					JOptionPane.showConfirmDialog(
-							_frame, 
-							"Already at the first image in the set!", 
-							_frame.getTitle(), 
-							JOptionPane.OK_OPTION, 
+							_frame,
+							"Already at the first image in the set!",
+							_frame.getTitle(),
+							JOptionPane.OK_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
@@ -607,7 +609,7 @@ public class TrainGui {
 	}
 
 	/**
-	 * Move right through the current Training Set
+	 * Move to the last Grid in the current Training Set
 	 */
 	private class LastGridListener implements ActionListener {
 		@Override
@@ -615,10 +617,10 @@ public class TrainGui {
 			try {
 				if (_index >= _trainingSet.getCount() - 1) {
 					JOptionPane.showConfirmDialog(
-							_frame, 
-							"Already at the last image in the set!", 
-							_frame.getTitle(), 
-							JOptionPane.OK_OPTION, 
+							_frame,
+							"Already at the last image in the set!",
+							_frame.getTitle(),
+							JOptionPane.OK_OPTION,
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
@@ -629,9 +631,9 @@ public class TrainGui {
 			}
 		}
 	}
-	
+
 	/**
-	 * Execute the neural net
+	 * Execute the neural net on the current Grid
 	 */
 	private class ExecuteListener implements ActionListener {
 		@Override
@@ -656,7 +658,7 @@ public class TrainGui {
 			_trainingManager.setTrainingSet(_trainingSet);
 			try {
 				// TODO: disable all
-				_trainingManager.train(5000);
+				_trainingManager.train(500000);
 				JOptionPane.showMessageDialog(null, "Training Finished!");
 				// TODO: enable all
 			} catch (Exception e) {
@@ -701,20 +703,28 @@ public class TrainGui {
 		public void mouseMoved(MouseEvent e) {}
 	}
 
+	/**
+	 * Set the Expected Output lists
+	 * @param c - Character to set the lists to
+	 */
 	private void setSelectList(char c) {
 		_expectedOutputList.setSelectedItem(c);
-		
+
 		Enumeration<AbstractButton> e = _expectedOutputGroup.getElements();
-	    while (e.hasMoreElements()) {
-	    	AbstractButton btn = e.nextElement();
-	    	if (c == btn.getText().charAt(0)) {
-	    		btn.setSelected(true);
-	    		break;
-	    	}
-	    	
-	    }
+		while (e.hasMoreElements()) {
+			AbstractButton btn = e.nextElement();
+			if (c == btn.getText().charAt(0)) {
+				btn.setSelected(true);
+				break;
+			}
+
+		}
 	}
-	
+
+	/**
+	 * Set the current TrainingGrid and update display (null sets the grid to a new grid)
+	 * @param trainGrid - TrainingGrid to set
+	 */
 	private void setTrainingGrid(TrainingGrid trainGrid) {
 		if (trainGrid == null) {
 			_currentTrainGrid = null;
@@ -727,15 +737,23 @@ public class TrainGui {
 		}
 		checkEnableDisable();
 	}
-	
+
+	/**
+	 * Display a yes/no/cancel question
+	 * @param message - text to display
+	 * @return message result
+	 */
 	private int confirmQuestion(String message) {
 		return JOptionPane.showConfirmDialog(
-				_frame, 
-				message, _frame.getTitle(), 
-				JOptionPane.YES_NO_CANCEL_OPTION, 
+				_frame,
+				message, _frame.getTitle(),
+				JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 	}
-	
+
+	/**
+	 * Enable and Disable appropriate buttons
+	 */
 	private void checkEnableDisable() {
 		if (_trainingSet.getCount() > 0) {
 			_saveSetMenuItem.setEnabled(true);
@@ -746,13 +764,13 @@ public class TrainGui {
 			_saveSetAsMenuItem.setEnabled(false);
 			_trainMenuItem.setEnabled(false);
 		}
-		
+
 		if (_currentTrainGrid == null) {
 			_deleteGridMenuItem.setEnabled(true);
 		} else {
 			_deleteGridMenuItem.setEnabled(true);
 		}
-		
+
 		if (_index > 0) {
 			_leftGridMenuItem.setEnabled(true);
 			_leftBtn.setEnabled(true);
@@ -764,7 +782,7 @@ public class TrainGui {
 			_firstGridMenuItem.setEnabled(false);
 			_firstBtn.setEnabled(false);
 		}
-		
+
 		if (_index < _trainingSet.getCount() - 1) {
 			_rightGridMenuItem.setEnabled(true);
 			_rightBtn.setEnabled(true);
@@ -776,7 +794,7 @@ public class TrainGui {
 			_lastGridMenuItem.setEnabled(false);
 			_lastBtn.setEnabled(false);
 		}
-		
+
 		if (_index >= _trainingSet.getCount()) {
 			_indexLabel.setText(String.format(NEW_INDEX_LABEL, _trainingSet.getCount()));
 		} else {

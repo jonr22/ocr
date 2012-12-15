@@ -10,11 +10,12 @@ import java.io.Serializable;
  */
 public class Coordinate implements Serializable {
 	/**
-     * generated Serial Version UID
-     */
-    private static final long serialVersionUID = 8238698537968720873L;
+	 * generated Serial Version UID
+	 */
+	private static final long serialVersionUID = 8238698537968720873L;
 
-    private int _row, _col;
+	// instance variables
+	private int _row, _col;
 
 	/**
 	 * Default Constructor

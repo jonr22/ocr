@@ -10,12 +10,13 @@ import java.io.Serializable;
  */
 public class Grid implements Serializable {
 	/**
-     * generated Serial Version UID
-     */
-    private static final long serialVersionUID = 5568527630676326642L;
+	 * generated Serial Version UID
+	 */
+	private static final long serialVersionUID = 5568527630676326642L;
 
-    private boolean[][] _grid;
-	private int _size = 8;
+	// instance variables
+	private boolean[][] _grid;
+	private int _size = Constants.GRID_SIZE;
 
 	/**
 	 * Constructor - Set the size of the grid (grids are square, the size of a single side)
@@ -35,19 +36,23 @@ public class Grid implements Serializable {
 		return _size;
 	}
 
+	/**
+	 * Clone the current instance
+	 */
+	@Override
 	public Grid clone() {
-	    Grid grid = new Grid(_size);
-	    for (int row = 0; row < _size; row++) {
-	        for (int col = 0; col < _size; col++) {
-	            Coordinate coord = new Coordinate(row, col);
-	            try {
-	                grid.setValue(coord, _grid[row][col]);
-	            } catch (Exception ex) {
-	                // TODO: handle this
-	            }
-	        }
-	    }
-	    return grid;
+		Grid grid = new Grid(_size);
+		for (int row = 0; row < _size; row++) {
+			for (int col = 0; col < _size; col++) {
+				Coordinate coord = new Coordinate(row, col);
+				try {
+					grid.setValue(coord, _grid[row][col]);
+				} catch (Exception ex) {
+					grid = null;
+				}
+			}
+		}
+		return grid;
 	}
 
 	/**

@@ -20,11 +20,12 @@ public class Neuron implements Serializable {
 	 */
 	public static final int OFFSET = -1;
 
+	// instance variables
 	private double[] _weights;
-	private ActivationFunction _activationFunction;
 	private int _inputCount = 0;
 	private double _lastOutput = -1.0;
 	private double[] _lastInput = null;
+	private ActivationFunction _activationFunction;
 	private Random rnd = new Random();
 
 	/**

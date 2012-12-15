@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * Representation of an Artification Neural Network
+ * Representation of an Artificial Neural Network
  * The number of inputs, outputs, and neurons in the hidden layer are
  * configurable and the Activation Function can be configured too with
  * any class that implements the ActivationFunction interface.
@@ -25,13 +25,14 @@ public class Network implements Serializable  {
 	 */
 	private static final long serialVersionUID = 7848387727961706621L;
 
+	// instance variables
 	private Layer _hiddenLayer;
 	private Layer _outputLayer;
 	private double[] _lastOutputs;
 	private int _inputCount = 0;
 	private int _outputCount = 0;
 	private int _hiddenLayerNeuronCount = 0;
-	ActivationFunction _activationFunction;
+	private ActivationFunction _activationFunction;
 
 	/**
 	 * Constructor

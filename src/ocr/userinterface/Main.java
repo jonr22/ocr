@@ -1,14 +1,17 @@
 package ocr.userinterface;
 
+/**
+ * Contains Main Method for OCR
+ * @author Jonathan Reimels
+ * @version 1.0.0
+ */
 public class Main {
     /**
-     * Run GUI
+     * Run the GUI
      * @param args
      */
     public static void main(String[] args) {
-        //MainGui gui = new MainGui();
-        //gui.buildGui();
-        TrainGui gui = new TrainGui();
+        OcrGui gui = new OcrGui();
         gui.buildGui();
     }
 }

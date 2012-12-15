@@ -11,12 +11,13 @@ import java.util.ArrayList;
  * @version 1.0.0
  */
 public class BackPropagator implements Serializable  { //TODO: have this extend class called Trainer
-    // TODO: this probably doesn't need to be Serializable
+	// TODO: this probably doesn't need to be Serializable
 	/**
 	 * generated Serial Version UID
 	 */
 	private static final long serialVersionUID = -8960781685209341841L;
 
+	// instance variables
 	private ArrayList<double[]> _inputs = new ArrayList<double[]>();
 	private ArrayList<double[]> _expectedOutputs = new ArrayList<double[]>();
 	private ArrayList<Double> _averageErrors = new ArrayList<Double>();

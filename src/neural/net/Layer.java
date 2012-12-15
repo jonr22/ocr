@@ -14,6 +14,7 @@ public class Layer implements Serializable  {
 	 */
 	private static final long serialVersionUID = -5933031753552996252L;
 
+	// instance variables
 	private Neuron[] _neurons;
 	private double[] _lastOutputs;
 	private int _neuronCount = 0;
