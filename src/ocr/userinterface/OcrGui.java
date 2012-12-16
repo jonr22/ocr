@@ -141,12 +141,18 @@ public class OcrGui {
 		// set accelerators
 		_saveSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_S,
-				InputEvent.CTRL_DOWN_MASK));
+				InputEvent.META_DOWN_MASK));
 		_saveNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_S,
-				InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
-		_addGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-		_clearGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
+				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+		_loadSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_L,
+				InputEvent.META_DOWN_MASK));
+		_loadNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_L,
+				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+		_addGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_DOWN_MASK));
+		_clearGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK));
 		_leftGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK));
 		_rightGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK));
 		_firstGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -155,8 +161,8 @@ public class OcrGui {
 		_lastGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_RIGHT,
 				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
-		_executeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
-		_trainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK));
+		_executeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.META_DOWN_MASK));
+		_trainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.META_DOWN_MASK));
 
 		// set actions
 		_newSetMenuItem.addActionListener(new NewSetListener());
@@ -410,6 +416,7 @@ public class OcrGui {
 			try {
 				JFileChooser fileSave = new JFileChooser();
 				fileSave.showSaveDialog(_frame);
+				fileSave.setDialogType(JFileChooser.SAVE_DIALOG);
 				if (JFileChooser.APPROVE_OPTION != fileSave.showSaveDialog(_frame)) {
 					return;
 				}
