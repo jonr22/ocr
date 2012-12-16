@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -368,7 +369,11 @@ public class OcrGui {
 					}
 				}
 
-				JFileChooser fileOpen = new JFileChooser();
+				File f = new File(Constants.DEFAULT_DIR);
+				if (!f.exists()) {
+					f = new File(Constants.BACKUP_DIR);
+				}
+				JFileChooser fileOpen = new JFileChooser(f);
 				if (JFileChooser.APPROVE_OPTION != fileOpen.showOpenDialog(_frame)) {
 					return;
 				}
@@ -414,9 +419,11 @@ public class OcrGui {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			try {
-				JFileChooser fileSave = new JFileChooser();
-				fileSave.showSaveDialog(_frame);
-				fileSave.setDialogType(JFileChooser.SAVE_DIALOG);
+				File f = new File(Constants.DEFAULT_DIR);
+				if (!f.exists()) {
+					f = new File(Constants.BACKUP_DIR);
+				}
+				JFileChooser fileSave = new JFileChooser(f);
 				if (JFileChooser.APPROVE_OPTION != fileSave.showSaveDialog(_frame)) {
 					return;
 				}
@@ -449,7 +456,11 @@ public class OcrGui {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			try {
-				JFileChooser fileOpen = new JFileChooser();
+				File f = new File(Constants.DEFAULT_DIR);
+				if (!f.exists()) {
+					f = new File(Constants.BACKUP_DIR);
+				}
+				JFileChooser fileOpen = new JFileChooser(f);
 				if (JFileChooser.APPROVE_OPTION != fileOpen.showOpenDialog(_frame)) {
 					return;
 				}
@@ -487,8 +498,11 @@ public class OcrGui {
 		@Override
 		public void actionPerformed(ActionEvent a) {
 			try {
-				JFileChooser fileSave = new JFileChooser();
-				fileSave.showSaveDialog(_frame);
+				File f = new File(Constants.DEFAULT_DIR);
+				if (!f.exists()) {
+					f = new File(Constants.BACKUP_DIR);
+				}
+				JFileChooser fileSave = new JFileChooser(f);
 				if (JFileChooser.APPROVE_OPTION != fileSave.showSaveDialog(_frame)) {
 					return;
 				}

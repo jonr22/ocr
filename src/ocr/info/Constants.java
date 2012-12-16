@@ -27,8 +27,12 @@ public class Constants {
 	 */
 	public static final double CONFIDENCE = .8;
 	
+	public static final String DEFAULT_DIR = "./data";
+	
+	public static final String BACKUP_DIR = ".";
+	
 	/**
 	 * Number of epochs to run through in training
 	 */
-	public static final int EPOCH_COUNT = 10000;
+	public static final int DEFAULT_EPOCH_COUNT = 10000;
 }
