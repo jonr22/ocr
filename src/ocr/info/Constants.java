@@ -25,4 +25,9 @@ public class Constants {
 	 * Confidence threshold for each letter (should be between 0 and 1)
 	 */
 	public static final double CONFIDENCE = .8;
+	
+	/**
+	 * Number of epochs to run through in training
+	 */
+	public static final int EPOCH_COUNT = 10000;
 }

@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -658,7 +659,11 @@ public class OcrGui {
 			_trainingManager.setTrainingSet(_trainingSet);
 			try {
 				// TODO: disable all
-				_trainingManager.train(500000);
+				Integer epochCount = promptPositiveInteger("Number of Epochs to run?");
+				if (epochCount == null) {
+					return;
+				}
+				_trainingManager.train(epochCount);
 				JOptionPane.showMessageDialog(null, "Training Finished!");
 				// TODO: enable all
 			} catch (Exception e) {
@@ -749,6 +754,45 @@ public class OcrGui {
 				message, _frame.getTitle(),
 				JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
+	}
+
+	/**
+	 * Use a dialog to prompt for a positive Integer from the user
+	 * @param message - message to display to user
+	 * @return Integer input by user, null for cancel
+	 */
+	private Integer promptPositiveInteger(String message) {
+		boolean done = false;
+		int result = -1;
+		while (!done) {
+			done = true;
+			String s = JOptionPane.showInputDialog(
+					_frame,
+					message,
+					_frame.getTitle(),
+					JOptionPane.OK_CANCEL_OPTION);
+			//String s = JOptionPane.showInputDialog(_frame, message, "100");
+			if (s == null) {
+				return null;
+			}
+			try {
+				result = Integer.parseInt(s);
+				if (result < 0) {
+					done = false;
+				}
+			} catch (NumberFormatException ex) {
+				done = false;
+			}
+
+			if (!done) {
+				JOptionPane.showMessageDialog(
+						_frame,
+						"Invalid Input!",
+						_frame.getTitle(),
+						JOptionPane.OK_OPTION);
+			}
+		}
+		return result;
 	}
 
 	/**
