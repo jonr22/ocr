@@ -74,8 +74,8 @@ public class Coordinate implements Serializable {
 
 	/**
 	 * Check if coordinate is equal in value to another coordinate
-	 * @param coord
-	 * @return
+	 * @param coord - Coordinate to compare to
+	 * @return true if coordinates are equal
 	 */
 	public boolean isEqual(Coordinate coord) {
 		if (coord.getRow() == _row && coord.getCol() == _col) {
