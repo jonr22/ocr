@@ -140,18 +140,30 @@ public class OcrGui {
 		}
 
 		// set accelerators
-		_saveSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_S,
+		_newSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_N,
 				InputEvent.META_DOWN_MASK));
-		_saveNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_S,
-				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		_loadSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_L,
 				InputEvent.META_DOWN_MASK));
+		_saveSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_S,
+				InputEvent.META_DOWN_MASK));
+		_saveSetAsMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_S,
+				InputEvent.META_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+		_newNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_N,
+				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		_loadNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_L,
 				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+		_saveNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_S,
+				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+		_saveNetAsMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_S,
+				InputEvent.META_DOWN_MASK | InputEvent.ALT_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		_addGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_DOWN_MASK));
 		_clearGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK));
 		_leftGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK));
@@ -374,6 +386,8 @@ public class OcrGui {
 					f = new File(Constants.BACKUP_DIR);
 				}
 				JFileChooser fileOpen = new JFileChooser(f);
+				fileOpen.addChoosableFileFilter(new FileTypeFilter(".ts", "Training Set"));
+				
 				if (JFileChooser.APPROVE_OPTION != fileOpen.showOpenDialog(_frame)) {
 					return;
 				}
@@ -424,6 +438,8 @@ public class OcrGui {
 					f = new File(Constants.BACKUP_DIR);
 				}
 				JFileChooser fileSave = new JFileChooser(f);
+				fileSave.addChoosableFileFilter(new FileTypeFilter(".ts", "Training Set"));
+				
 				if (JFileChooser.APPROVE_OPTION != fileSave.showSaveDialog(_frame)) {
 					return;
 				}
@@ -461,6 +477,7 @@ public class OcrGui {
 					f = new File(Constants.BACKUP_DIR);
 				}
 				JFileChooser fileOpen = new JFileChooser(f);
+				fileOpen.addChoosableFileFilter(new FileTypeFilter(".nn", "Artificial Neural Network"));
 				if (JFileChooser.APPROVE_OPTION != fileOpen.showOpenDialog(_frame)) {
 					return;
 				}
@@ -503,6 +520,8 @@ public class OcrGui {
 					f = new File(Constants.BACKUP_DIR);
 				}
 				JFileChooser fileSave = new JFileChooser(f);
+				fileSave.addChoosableFileFilter(new FileTypeFilter(".nn", "Artificial Neural Network"));
+				
 				if (JFileChooser.APPROVE_OPTION != fileSave.showSaveDialog(_frame)) {
 					return;
 				}
