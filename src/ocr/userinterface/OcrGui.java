@@ -17,6 +17,7 @@ import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -71,6 +72,7 @@ public class OcrGui {
 	private JMenu _editMenu = new JMenu("Edit");
 	private JMenu _navigateMenu = new JMenu("Navigate");
 	private JMenu _runMenu = new JMenu("Run");
+	private JMenu _windowMenu = new JMenu("Window");
 
 	// file menu items
 	private JMenuItem _newSetMenuItem = new JMenuItem("New Set");
@@ -96,19 +98,25 @@ public class OcrGui {
 	// run menu items
 	private JMenuItem _executeMenuItem = new JMenuItem("Execute");
 	private JMenuItem _trainMenuItem = new JMenuItem("Train");
+	
+	// window menu items
+	private JCheckBoxMenuItem _displayTopMenuItem = new JCheckBoxMenuItem("Top Menu");
+	private JCheckBoxMenuItem _displayBottomMenuItem = new JCheckBoxMenuItem("Bottom Menu");
 
 	// sub menu items
 	private JMenu _expectedOutputMenu = new JMenu("Expected Output");
 	private ButtonGroup _expectedOutputGroup = new ButtonGroup();
 
-	// top panel items
+	// top panel
+	private JPanel _topPanel = new JPanel(new BorderLayout());
 	private JComboBox _expectedOutputList = new JComboBox(Constants.OUTPUT);
 	private JButton _addBtn = new JButton("Add");
 	private JButton _clearBtn = new JButton("Clear");
 	private JButton _executeBtn = new JButton("Execute");
 	private JLabel _resultLabel = new JLabel(EMPTY_RESULT_LABEL);
 
-	// bottom panel items
+	// bottom panel
+	private JPanel _bottomPanel = new JPanel(new BorderLayout());
 	private JButton _firstBtn = new JButton("|<");
 	private JButton _leftBtn = new JButton("<");
 	private JButton _rightBtn = new JButton(">");
@@ -132,7 +140,6 @@ public class OcrGui {
 		// -------------------Top-------------------
 		// menu and top panel
 		JMenuBar menubar = new JMenuBar();
-		JPanel topPanel = new JPanel(new BorderLayout());
 		JPanel menuPanel = new JPanel();
 		JPanel resultPanel = new JPanel();
 
@@ -181,6 +188,10 @@ public class OcrGui {
 				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		_executeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.META_DOWN_MASK));
 		_trainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.META_DOWN_MASK));
+		
+		// set checked items
+		_displayTopMenuItem.setSelected(true);
+		_displayBottomMenuItem.setSelected(true);
 
 		// set actions
 		_newSetMenuItem.addActionListener(new NewSetListener());
@@ -200,6 +211,8 @@ public class OcrGui {
 		_lastGridMenuItem.addActionListener(new LastGridListener());
 		_executeMenuItem.addActionListener(new ExecuteListener());
 		_trainMenuItem.addActionListener(new TrainListener());
+		_displayTopMenuItem.addActionListener(new DisplayTopPanelListener ());
+		_displayBottomMenuItem.addActionListener(new DisplayBottomPanelListener());
 		_expectedOutputList.addActionListener(new SelectOutputListener());
 		_addBtn.addActionListener(new AddGridListener());
 		_clearBtn.addActionListener(new ClearGridListener());
@@ -244,6 +257,10 @@ public class OcrGui {
 		// add run menu items
 		_runMenu.add(_executeMenuItem);
 		_runMenu.add(_trainMenuItem);
+		
+		// add window menu items
+		_windowMenu.add(_displayTopMenuItem);
+		_windowMenu.add(_displayBottomMenuItem);
 
 		// add top panel items
 		menuPanel.add(_expectedOutputList);
@@ -251,20 +268,20 @@ public class OcrGui {
 		menuPanel.add(_clearBtn);
 		menuPanel.add(_executeBtn);
 		resultPanel.add(_resultLabel);
-		topPanel.add(menuPanel, BorderLayout.NORTH);
-		topPanel.add(resultPanel, BorderLayout.SOUTH);
+		_topPanel.add(menuPanel, BorderLayout.NORTH);
+		_topPanel.add(resultPanel, BorderLayout.SOUTH);
 
 		// setup menu and top panel
 		menubar.add(_fileMenu);
 		menubar.add(_editMenu);
 		menubar.add(_navigateMenu);
 		menubar.add(_runMenu);
+		menubar.add(_windowMenu);
 		_frame.setJMenuBar(menubar);
-		background.add(topPanel, BorderLayout.NORTH);
+		background.add(_topPanel, BorderLayout.NORTH);
 
 		// -------------------Bottom-------------------
 		// create the bottom panel
-		JPanel bottomPanel = new JPanel(new BorderLayout());
 		JPanel navPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
 
@@ -290,9 +307,9 @@ public class OcrGui {
 		infoPanel.add(_indexLabel);
 
 		// set up bottom panel
-		bottomPanel.add(navPanel, BorderLayout.NORTH);
-		bottomPanel.add(infoPanel, BorderLayout.SOUTH);
-		background.add(bottomPanel, BorderLayout.SOUTH);
+		_bottomPanel.add(navPanel, BorderLayout.NORTH);
+		_bottomPanel.add(infoPanel, BorderLayout.SOUTH);
+		background.add(_bottomPanel, BorderLayout.SOUTH);
 
 		// -------------------Middle-------------------
 		// add listeners
@@ -749,6 +766,26 @@ public class OcrGui {
 					_frame.setEnabled(true);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Flip the visibility of the Top Panel
+	 */
+	private class DisplayTopPanelListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent a) {
+			_topPanel.setVisible(_displayTopMenuItem.isSelected());
+		}
+	}
+	
+	/**
+	 * Flip the visibility of the Bottom Panel
+	 */
+	private class DisplayBottomPanelListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent a) {
+			_bottomPanel.setVisible(_displayBottomMenuItem.isSelected());
 		}
 	}
 
