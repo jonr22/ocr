@@ -1,5 +1,7 @@
 package ocr.data;
 
+import javax.swing.SwingWorker;
+
 import neural.net.BackPropagator;
 import neural.net.Network;
 import ocr.info.TrainingGrid;
@@ -10,11 +12,20 @@ import ocr.info.TrainingGrid;
  * @author Jonathan Reimels
  * @version 1.0.0
  */
-public class TrainingManager {
+public class TrainingManager extends SwingWorker<Void, Void> {
 	// instance variables
 	private TrainingSetManager _trainingSet;
 	private Network _network; // TODO: should this be NetworkManager
 	private double _learningRate = 0.7;
+	private int _epochCount = 0;
+	
+	/**
+	 * Set the number of epochs to train
+	 * @param epochCount - number of epochs to train
+	 */
+	public void setEpochCount(int epochCount) {
+		_epochCount = epochCount;
+	}
 
 	/**
 	 * Set the Network to use for training
@@ -42,16 +53,26 @@ public class TrainingManager {
 
 	/**
 	 * Train the set Network with the set TrainingSet and learning rate
-	 * @param epochCount - number of times to run the training
-	 * @throws Exception
+	 * for the set EpochCount times
 	 */
-	public void train(int epochCount) throws Exception {
-		BackPropagator trainer = initializeTrainer();
+	@Override
+    public Void doInBackground() {
+		try {
+			int progress = 0;
+			BackPropagator trainer = initializeTrainer();
 
-		for (int i = 0; i < epochCount; i++) {
-			trainer.runAndUpdate();
-		}
-	}
+			setProgress(0);
+            while (progress < _epochCount && !isCancelled()) {
+            	trainer.runAndUpdate();
+            	progress++;
+                setProgress((100 * progress) / _epochCount);
+            }
+        } catch (Exception ex) {
+        	ex.printStackTrace();
+        }
+
+        return null;
+    }
 
 	/**
 	 * Initialize back propagator with the appropriate settings

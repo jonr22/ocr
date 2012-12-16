@@ -1,7 +1,6 @@
 package ocr.userinterface;
 
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -9,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Enumeration;
 
@@ -27,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.ProgressMonitor;
 
 import ocr.data.GridProcessor;
 import ocr.data.NetworkManager;
@@ -112,6 +114,9 @@ public class OcrGui {
 	private JButton _rightBtn = new JButton(">");
 	private JButton _lastBtn = new JButton(">|");
 	private JLabel _indexLabel = new JLabel(DEFAULT_INDEX_LABEL);
+
+	// progress monitor
+	private ProgressMonitor _trainProgress;
 
 	/**
 	 * Create the GUI
@@ -387,7 +392,7 @@ public class OcrGui {
 				}
 				JFileChooser fileOpen = new JFileChooser(f);
 				fileOpen.addChoosableFileFilter(new FileTypeFilter(".ts", "Training Set"));
-				
+
 				if (JFileChooser.APPROVE_OPTION != fileOpen.showOpenDialog(_frame)) {
 					return;
 				}
@@ -439,7 +444,7 @@ public class OcrGui {
 				}
 				JFileChooser fileSave = new JFileChooser(f);
 				fileSave.addChoosableFileFilter(new FileTypeFilter(".ts", "Training Set"));
-				
+
 				if (JFileChooser.APPROVE_OPTION != fileSave.showSaveDialog(_frame)) {
 					return;
 				}
@@ -521,7 +526,7 @@ public class OcrGui {
 				}
 				JFileChooser fileSave = new JFileChooser(f);
 				fileSave.addChoosableFileFilter(new FileTypeFilter(".nn", "Artificial Neural Network"));
-				
+
 				if (JFileChooser.APPROVE_OPTION != fileSave.showSaveDialog(_frame)) {
 					return;
 				}
@@ -698,24 +703,51 @@ public class OcrGui {
 	private class TrainListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent a) {
-			_trainingManager.setLearningRate(0.7);
-			_trainingManager.setNetwork(_networkManager.getNetwork());
-			_trainingManager.setTrainingSet(_trainingSet);
 			try {
-				// TODO: disable all
+				_trainingManager = new TrainingManager();
+				_trainingManager.setLearningRate(0.7);
+				_trainingManager.setNetwork(_networkManager.getNetwork());
+				_trainingManager.setTrainingSet(_trainingSet);
+
 				Integer epochCount = promptPositiveInteger("Number of Epochs to run?");
 				if (epochCount == null) {
 					return;
 				}
 
-				_frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				_trainingManager.train(epochCount);
-				_frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-				JOptionPane.showMessageDialog(null, "Training Finished!");
-				// TODO: enable all
+				_trainingManager.setEpochCount(epochCount);
+				_trainProgress = new ProgressMonitor(
+						_frame,
+						"Training...",
+						"",
+						0,
+						100);
+				_frame.setEnabled(false);
+				_trainProgress.setProgress(0);
+				_trainingManager.addPropertyChangeListener(new TrainingProgressListener());
+				_trainingManager.execute();
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * Update Progress Monitor
+	 */
+	private class TrainingProgressListener implements PropertyChangeListener {
+		@Override
+		public void propertyChange(PropertyChangeEvent e) {
+			if ("progress" == e.getPropertyName() ) {
+				int progress = (Integer) e.getNewValue();
+				_trainProgress.setProgress(progress);
+				String message = String.format("Completed %d%%\n", progress); //TODO: update this
+				_trainProgress.setNote(message);
+				if (_trainProgress.isCanceled()) {
+					_trainingManager.cancel(true);
+				}
+				if (_trainingManager.isDone()) {
+					_frame.setEnabled(true);
+				}
 			}
 		}
 	}
