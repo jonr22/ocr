@@ -546,7 +546,7 @@ public class OcrGui {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				_trainingSet.add(new TrainingGrid(_gridPanel.getGrid(), _expectedOutput));
-				_index = _trainingSet.getCount(); // TODO: does this work? one more than available as it's new
+				_index = _trainingSet.getCount();
 				setTrainingGrid(null);
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -740,7 +740,7 @@ public class OcrGui {
 			if ("progress" == e.getPropertyName() ) {
 				int progress = (Integer) e.getNewValue();
 				_trainProgress.setProgress(progress);
-				String message = String.format("Completed %d%%\n", progress); //TODO: update this
+				String message = String.format("Completed %d%%\n", progress);
 				_trainProgress.setNote(message);
 				if (_trainProgress.isCanceled()) {
 					_trainingManager.cancel(true);
