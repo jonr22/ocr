@@ -14,7 +14,6 @@ import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -663,7 +662,9 @@ public class OcrGui {
 				if (epochCount == null) {
 					return;
 				}
+
 				_trainingManager.train(epochCount);
+
 				JOptionPane.showMessageDialog(null, "Training Finished!");
 				// TODO: enable all
 			} catch (Exception e) {
@@ -771,7 +772,6 @@ public class OcrGui {
 					message,
 					_frame.getTitle(),
 					JOptionPane.OK_CANCEL_OPTION);
-			//String s = JOptionPane.showInputDialog(_frame, message, "100");
 			if (s == null) {
 				return null;
 			}
