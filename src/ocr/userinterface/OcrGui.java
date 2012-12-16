@@ -1,7 +1,7 @@
 package ocr.userinterface;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -48,6 +48,8 @@ public class OcrGui {
 	private static final String DEFAULT_INDEX_LABEL = "0 of 0";
 	private static final String INDEX_LABEL = "%d of %d";
 	private static final String NEW_INDEX_LABEL = "? of %d";
+	private static final String EMPTY_RESULT_LABEL = "";
+	private static final String RESULT_LABEL = "Result: %c";
 
 	// instance variables
 	private char _expectedOutput;
@@ -101,6 +103,7 @@ public class OcrGui {
 	private JButton _addBtn = new JButton("Add");
 	private JButton _clearBtn = new JButton("Clear");
 	private JButton _executeBtn = new JButton("Execute");
+	private JLabel _resultLabel = new JLabel(EMPTY_RESULT_LABEL);
 
 	// bottom panel items
 	private JButton _firstBtn = new JButton("|<");
@@ -123,8 +126,9 @@ public class OcrGui {
 		// -------------------Top-------------------
 		// menu and top panel
 		JMenuBar menubar = new JMenuBar();
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new FlowLayout());
+		JPanel topPanel = new JPanel(new BorderLayout());
+		JPanel menuPanel = new JPanel();
+		JPanel resultPanel = new JPanel();
 
 		// create sub-menu
 		for (int i = 0; i < Constants.OUTPUT.length; i++) {
@@ -218,10 +222,13 @@ public class OcrGui {
 		_runMenu.add(_trainMenuItem);
 
 		// add top panel items
-		topPanel.add(_expectedOutputList);
-		topPanel.add(_addBtn);
-		topPanel.add(_clearBtn);
-		topPanel.add(_executeBtn);
+		menuPanel.add(_expectedOutputList);
+		menuPanel.add(_addBtn);
+		menuPanel.add(_clearBtn);
+		menuPanel.add(_executeBtn);
+		resultPanel.add(_resultLabel);
+		topPanel.add(menuPanel, BorderLayout.NORTH);
+		topPanel.add(resultPanel, BorderLayout.SOUTH);
 
 		// setup menu and top panel
 		menubar.add(_fileMenu);
@@ -233,9 +240,7 @@ public class OcrGui {
 
 		// -------------------Bottom-------------------
 		// create the bottom panel
-		JPanel bottomPanel = new JPanel();
-		bottomPanel.setLayout(new BorderLayout());
-
+		JPanel bottomPanel = new JPanel(new BorderLayout());
 		JPanel navPanel = new JPanel();
 		JPanel infoPanel = new JPanel();
 
@@ -532,7 +537,7 @@ public class OcrGui {
 	private class ClearGridListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent a) {
-			_gridPanel.clear();
+			setTrainingGrid(null);
 		}
 	}
 
@@ -640,7 +645,7 @@ public class OcrGui {
 		public void actionPerformed(ActionEvent a) {
 			try {
 				char result = GridProcessor.process(_gridPanel.getGrid(), _networkManager.getNetwork());
-				System.out.println(String.format("Result: %c", result)); // TODO: print this somewhere else
+				_resultLabel.setText(String.format(RESULT_LABEL, result));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -663,7 +668,9 @@ public class OcrGui {
 					return;
 				}
 
+				_frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				_trainingManager.train(epochCount);
+				_frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
 				JOptionPane.showMessageDialog(null, "Training Finished!");
 				// TODO: enable all
@@ -844,6 +851,8 @@ public class OcrGui {
 		} else {
 			_indexLabel.setText(String.format(INDEX_LABEL, _index + 1, _trainingSet.getCount()));
 		}
+
+		_resultLabel.setText(EMPTY_RESULT_LABEL);
 	}
 }
 
