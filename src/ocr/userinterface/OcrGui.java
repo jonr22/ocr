@@ -98,7 +98,7 @@ public class OcrGui {
 	// run menu items
 	private JMenuItem _executeMenuItem = new JMenuItem("Execute");
 	private JMenuItem _trainMenuItem = new JMenuItem("Train");
-	
+
 	// window menu items
 	private JCheckBoxMenuItem _displayTopMenuItem = new JCheckBoxMenuItem("Top Menu");
 	private JCheckBoxMenuItem _displayBottomMenuItem = new JCheckBoxMenuItem("Bottom Menu");
@@ -151,44 +151,50 @@ public class OcrGui {
 			_expectedOutputMenu.add(item);
 		}
 
+		// use Command/Meta key in place of CTRL on mac systems
+		int specialKey = InputEvent.CTRL_DOWN_MASK;
+		if (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
+		    specialKey = InputEvent.META_DOWN_MASK;
+		}
+
 		// set accelerators
 		_newSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_N,
-				InputEvent.META_DOWN_MASK));
+				specialKey));
 		_loadSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_L,
-				InputEvent.META_DOWN_MASK));
+				specialKey));
 		_saveSetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_S,
-				InputEvent.META_DOWN_MASK));
+				specialKey));
 		_saveSetAsMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_S,
-				InputEvent.META_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+				specialKey | InputEvent.ALT_DOWN_MASK));
 		_newNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_N,
-				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+				specialKey | InputEvent.SHIFT_DOWN_MASK));
 		_loadNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_L,
-				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+				specialKey | InputEvent.SHIFT_DOWN_MASK));
 		_saveNetMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_S,
-				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+				specialKey | InputEvent.SHIFT_DOWN_MASK));
 		_saveNetAsMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_S,
-				InputEvent.META_DOWN_MASK | InputEvent.ALT_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
-		_addGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.META_DOWN_MASK));
-		_clearGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.META_DOWN_MASK));
-		_leftGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK));
-		_rightGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK));
+				specialKey | InputEvent.ALT_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+		_addGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, specialKey));
+		_clearGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, specialKey));
+		_leftGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, specialKey));
+		_rightGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, specialKey));
 		_firstGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_LEFT,
-				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+				specialKey | InputEvent.SHIFT_DOWN_MASK));
 		_lastGridMenuItem.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_RIGHT,
-				InputEvent.META_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
-		_executeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.META_DOWN_MASK));
-		_trainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.META_DOWN_MASK));
-		
+				specialKey | InputEvent.SHIFT_DOWN_MASK));
+		_executeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, specialKey));
+		_trainMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, specialKey));
+
 		// set checked items
 		_displayTopMenuItem.setSelected(true);
 		_displayBottomMenuItem.setSelected(true);
@@ -257,7 +263,7 @@ public class OcrGui {
 		// add run menu items
 		_runMenu.add(_executeMenuItem);
 		_runMenu.add(_trainMenuItem);
-		
+
 		// add window menu items
 		_windowMenu.add(_displayTopMenuItem);
 		_windowMenu.add(_displayBottomMenuItem);
@@ -768,7 +774,7 @@ public class OcrGui {
 			}
 		}
 	}
-	
+
 	/**
 	 * Flip the visibility of the Top Panel
 	 */
@@ -778,7 +784,7 @@ public class OcrGui {
 			_topPanel.setVisible(_displayTopMenuItem.isSelected());
 		}
 	}
-	
+
 	/**
 	 * Flip the visibility of the Bottom Panel
 	 */
